@@ -2,8 +2,6 @@
 using System.Collections; // do this in order to use ArrayList and other cool things 
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VCELL_Emulator
 {
@@ -12,8 +10,23 @@ namespace VCELL_Emulator
         public MemoryBank Memories = new MemoryBank();
         delegate void presetTaskLookup (Action task);
         delegate void presetThinkLookup (Think task);
-        public Action Action { get; set; }
+        public Action eAction { get; set; }
+        public Predicate<Action> ishappen;
         public Think Think { get; set; }
+        public Action Action { get; private set; }
+
+        System.Action sysAction1;
+        System.Action<int> action; // arraylistdemo
+        enum thang
+        {
+            ACT,
+            ATTACK,
+            TALK,
+            THINK,
+            FEEL, 
+            HEAR,
+            RECOG
+        };
 
         public TaskBase this[int index]
         {
@@ -25,6 +38,11 @@ namespace VCELL_Emulator
             {
                 this[index] = value;
             }
+        }
+
+        public static void action2(int e) // action delegate
+        {
+            // same type and parameters
         }
 
         public Action FetchAction(int e)
@@ -45,6 +63,24 @@ namespace VCELL_Emulator
                              select n; // selection
             string[] bmw = {"whef.", "omg", "Gud Car", "meh"};
 
+            IList<Action> actions2 = new List<Think>()
+            {
+                new Action() 
+                { 
+                    grabPresetTaskList(e),
+                    "boppin",
+                    10,
+                    thang.ACT,
+                },
+                new Action()
+                {
+                    ishappen,
+                    "w",
+                    1,
+                    thang.HEAR,
+                }
+            };
+
             var cars = from v 
                    in bmw
                    group v 
@@ -52,10 +88,10 @@ namespace VCELL_Emulator
 
             foreach (var ec in cars)
             {
-               Console.Writeline("Group Name = " + ec.Key);
+               Console.WriteLine("Group Name = " + ec.Key);
                foreach (var ec in cars)
                {
-                  Console.Writeline("\t" + ec);
+                  Console.WriteLine("\t" + ec);
                }
             }
 
@@ -63,6 +99,12 @@ namespace VCELL_Emulator
             {
                 Console.WriteLine(vefer);
             }
+
+            var domeOfSins = from s in bmw
+                             select new {
+                                            r = s[0],
+                                            rName = s.ToString()
+                                        };
         #endregion
 
             return this[e].Action;
@@ -75,7 +117,7 @@ namespace VCELL_Emulator
 
         public Action grabPresetTaskList(int e)
         {
-            List<Action> redundants = new List<Action>;
+            List<Action> redundants = new List<Action>();
             int redundaC;
 
             Action[] tasks =
@@ -83,15 +125,14 @@ namespace VCELL_Emulator
                 new Action() 
                 { 
                 idea = memoryThinkTank
-                (e, ea: Memories), what = "Walk_Around", times = 1, 
-                /*(Action.thing.ACT)0*/
-                },
-
+                (e, ea: Memories), what = "Walk_Around", times = 1,
+                thang.ACT
+                }
             };
 
             Action[] actions = tasks.Where(s => s.times > 13).ToArray();
 
-            String[] stall = tasks.Where(s => s.what == "still"|"stall"|"wait"|"processing"|" "|""|"waiting").FirstOrDefault();
+            String[] stall = tasks.Where(s => s.what == "still"|"stall"|"wait"|" "|""|"waiting").FirstOrDefault();
 
             String doing = tasks.Where(s => s.times == 20).FirstOrDefault();
 
@@ -103,12 +144,13 @@ namespace VCELL_Emulator
 
             redundants.Clear();
             Console.WriteLine(redundaC +" : " + "redundancies cleared");
-            return tasks[e];
+            return ishappen(tasks[e]); // predicate delagate checks for
+            // relevant data or criterion
         }
 
         public static Think memoryThinkTank(int e, MemoryBank ea)
         {
-            return ea[e].e;
+            return ea[e].thinke;
         }
 
         #region basic funcions

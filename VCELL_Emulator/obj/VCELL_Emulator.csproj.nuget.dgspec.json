@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator.csproj": {}
+    "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator\\VCELL_Emulator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator.csproj": {
+    "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator\\VCELL_Emulator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator.csproj",
+        "projectUniqueName": "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator\\VCELL_Emulator.csproj",
         "projectName": "VCELL_Emulator",
-        "projectPath": "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator.csproj",
+        "projectPath": "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator\\VCELL_Emulator.csproj",
         "packagesPath": "C:\\Users\\azuka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\obj\\",
+        "outputPath": "C:\\Users\\azuka\\source\\repos\\VCELL_Emulator\\VCELL_Emulator\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 namespace VCELL_Emulator
 {
@@ -14,14 +15,9 @@ namespace VCELL_Emulator
         public float[][] biases;
 
         public float[][] desiredValues;
-
+        private static int x;
         private const float epsilon = 0.005f;
         private const float learnRate = 1f;
-
-        public Sigmoid()
-        {
-
-        }
 
         public Sigmoid(IReadOnlyList<int> structure)
         {
@@ -45,15 +41,16 @@ namespace VCELL_Emulator
                     weights[i][j] = new float[values[i].Length];
                     for(var k = 0; k < weights[i][j].Length; k++)
                     {
-                        weights[i][j][k] = (float) Random.NextDouble() * Math.Sqrt(2f / weights[i][j][k]);
+                        double lity = new Random().NextDouble() * Math.Sqrt(2f / weights[i][j][k]);
+                        weights[i][j][k] = (float)lity;
                     }
                 }
             }
         }
-        public static float Sum(IEnumerable<float> value, IReadOnlyList<float> weights) =>
-            values.Select((v, i) => v * weights[i]) * Sum(); // .Sum() didn't work
+        //public float Sum(IEnumerable<float> value, IReadOnlyList<float> weights) =>
+            //values.Select((v, i) => v * weights.Select(i)).Sum(); // .Sum() didn't work
 
-        private static float Sigmoid(float x) => 1f / (1f + (float)Math.Exp(-x));
+        private static float SigmoidL(float x) => 1f / (1f + (float)Math.Exp(-x));
 
         private static float HardSigmoid(float x) // conditional for output
         {
