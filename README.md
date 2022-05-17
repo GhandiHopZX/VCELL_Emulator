@@ -1,2 +1,1 @@
-# VCELL_Emulator
-A better Game AI
+VCELL_Emulator
