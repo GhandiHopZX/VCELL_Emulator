@@ -156,7 +156,7 @@ namespace VCELL_Emulator
 
         public static Think memoryThinkTank(int e, MemoryBank ea)
         {
-            return ea[e].thinke;
+            return ea.MemTup[e].thinke;
         }
 
         #region basic funcions

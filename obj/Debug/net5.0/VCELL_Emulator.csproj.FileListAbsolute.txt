@@ -30,3 +30,5 @@ C:\Users\azuka\source\repos\VCELL_Emulator\VCELL_Emulator\bin\Debug\net5.0\VCELL
 C:\Users\azuka\source\repos\VCELL_Emulator\VCELL_Emulator\obj\Debug\net5.0\refint\VCELL_Emulator.dll
 C:\Users\azuka\source\repos\VCELL_Emulator\VCELL_Emulator\obj\Debug\net5.0\VCELL_Emulator.genruntimeconfig.cache
 C:\Users\azuka\source\repos\VCELL_Emulator\VCELL_Emulator\obj\Debug\net5.0\ref\VCELL_Emulator.dll
+C:\Users\azuka\source\repos\VCELL_Emulator\VCELL_Emulator\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\azuka\source\repos\VCELL_Emulator\VCELL_Emulator\obj\Debug\net5.0\VCELL_Emulator.csproj.CopyComplete

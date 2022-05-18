@@ -25,6 +25,10 @@ namespace VCELL_Emulator
         // unique address
         public string uAddr;
 
+        //emulator addons
+        public Action actm;
+        public Think thinke;
+
         private static readonly Random random = new();
 
         public static string RandomString(int length)
