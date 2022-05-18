@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace VCELL_Emulator
 {
-    partial class AI
+    partial class AI : VCELL
     {
         #region properties
         string name;
         bool alive;
         int priorityLvl;
+        VCELL VCELL = new VCELL();
         Type typeChek = typeof(DoThought);
         VTree MyNodes;
         private VNode[] AddedNodes = Array.Empty<VNode>(); // put stuff in here or in the constructor
@@ -28,6 +29,7 @@ namespace VCELL_Emulator
         public int PriorityLvl { get => priorityLvl; set => priorityLvl = value; }
         public VNode[] AddedNodes1 { get => AddedNodes; set => AddedNodes = value; }
         public Type Typey { get; set; }
+        public VTree MyNodes1 { get => MyNodes; set => MyNodes = value; }
 
         public Type GetTypeChek()
         {
@@ -50,7 +52,7 @@ namespace VCELL_Emulator
         {
             DoThought doThought = new(ActivateLoop);
             Name = Inin;
-            MakeNodes(NodesAdd);
+            // VCELL Time
             Alive = Active;
             if(Alive == false)
             {
@@ -59,17 +61,9 @@ namespace VCELL_Emulator
             doThought(); //put this in different places
         }
 
-        public void MakeNodes(int IM)
+        public void VInitializer()
         {
-            for(int i= 0; i < IM; i++)
-            {
-               VNode vNode = new VNode();
-                vNode.data = "Empty";
-                vNode.name = new Random(0235).ToString();
-                vNode.uAddr.Trim();
-                vNode.name.Trim();
-                MyNodes.Insert(vNode);
-            }
+            
         }
 
         public DoTask FocusAction(DoTask doTask)

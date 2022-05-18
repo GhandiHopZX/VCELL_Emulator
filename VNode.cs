@@ -11,7 +11,11 @@ namespace VCELL_Emulator
         public string name;
         public object data; // this is vauge but it'll work for now.
                             // It should be the input data from the environment.
-        public int statData; // this is for the stats to be read
+                            // decode and encode this as bytes 
+
+        public int index; // this is for the stats to be read as an indexer id
+
+        public int statData; // statPoint
         public VNode previous;
         public VNode next;
 
@@ -34,7 +38,7 @@ namespace VCELL_Emulator
         public VNode()
         {
             uAddr = RandomString(4);
-            data = null;
+            data = 1;
             next = null;
             RightChild = null;
             LeftChild = null;

@@ -17,6 +17,35 @@ namespace VCELL_Emulator
 
         private List<VNode> RootNodes; // always only 2
 
+        public VTree(int nc, VNode starter) // no more null
+        {
+            starter.uAddr = "0000";
+            starter.data = new byte[nc];
+            starter.name = "one";
+            starter.statData = 0;
+
+            var TempNode = new VNode();
+            _ = new VNode();
+            VNode d = new VNode();
+            int lastItem = GetRootNodes1().Capacity;
+
+            TempNode.data = starter.data;
+            //TempNode.SetL(null);
+            //TempNode.SetR(null);
+
+            // if tree is empty, create root node
+            if (GetRootNodes1().Capacity == 0) // we need 2
+            {
+                GetRootNodes1().Add(TempNode);
+                GetRootNodes1().Add(TempNode);
+            }
+            else
+            {
+                _ = GetRootNodes1()[0];
+                d = GetRootNodes1()[lastItem];
+            }
+        }
+
         public enum ALLPRISMAFORMS
         {
             ADEPT,
@@ -108,30 +137,9 @@ namespace VCELL_Emulator
             };
         }
 
-        public void Insert(VNode dataIn)
+        public void Insert(VNode dataIn, int weher)
         {
-            var TempNode = new VNode();
-            _ = new VNode();
-            _ = new VNode();
-            int lastItem = GetRootNodes1().Capacity;
-
-            TempNode.data = data;
-            TempNode.SetL(null);
-            TempNode.SetR(null);
-
-            // if tree is empty, create root node
-            if (GetRootNodes1().Capacity == 0) // we need 2
-            {
-                GetRootNodes1().Add(TempNode);
-                GetRootNodes1().Add(TempNode);
-            }
-            else
-            {
-                _ = GetRootNodes1()[0];
-                _ = GetRootNodes1()[lastItem];
-            }
-
-            GetVaccumNodes1().Add(dataIn);
+            GetVaccumNodes1()[weher] = dataIn;
 
             Prismatize();
         }

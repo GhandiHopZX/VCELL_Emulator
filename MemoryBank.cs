@@ -44,7 +44,7 @@ namespace VCELL_Emulator
 
         public async void MethodRem(VNode[] m, Stack<Task> ts, int w)
         {
-            //_ = await Recall(m, ts, w);
+            await Recall(m, ts, w);
             Console.WriteLine("Recalling..." + PlaceF().ToString());
         }
 
@@ -58,15 +58,14 @@ namespace VCELL_Emulator
             return Task.Run(() => { Thread.Sleep(5000); return this[e]; });
         }
 
-        private int Recall(VNode[] m, Stack<Task> ts, int w)
+        private Task Recall(VNode[] m, Stack<Task> ts, int w)
         {
             /// 
             // pull the nodes
             //
             /// find the Node(s) needed.
             /// put that b on the stack of cmds
-            PlaceF(w);
-            return w;
+            return PlaceF(w);
         }
     }
 }
