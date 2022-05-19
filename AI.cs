@@ -12,9 +12,8 @@ namespace VCELL_Emulator
         string name;
         bool alive;
         int priorityLvl;
-        VCELL VCELL = new VCELL();
+        VCELL AVCELL = new VCELL();
         Type typeChek = typeof(DoThought);
-        VTree MyNodes;
         private VNode[] AddedNodes = Array.Empty<VNode>(); // put stuff in here or in the constructor
         Stack<Action> tasks;
         private List<Action> savedActions;
@@ -29,7 +28,6 @@ namespace VCELL_Emulator
         public int PriorityLvl { get => priorityLvl; set => priorityLvl = value; }
         public VNode[] AddedNodes1 { get => AddedNodes; set => AddedNodes = value; }
         public Type Typey { get; set; }
-        public VTree MyNodes1 { get => MyNodes; set => MyNodes = value; }
 
         public Type GetTypeChek()
         {
@@ -63,7 +61,22 @@ namespace VCELL_Emulator
 
         public void VInitializer()
         {
-            
+            AVCELL.SetName1("");
+            AVCELL.SetSpeed(9);
+            bool isV = (AVCELL is VCELL);
+            Console.WriteLine("THis is a VCELL");
+            Console.WriteLine("vabidabi punjabi?: {0}",
+                ChackValidabaidi(AVCELL));
+        }
+
+        public static string ChackValidabaidi(dynamic obj)
+        {
+            VCELL fe = obj as VCELL;
+            if (fe != null)
+            {
+                return "Checkenn :" + fe.GetName1(); 
+            }
+            return "Not a Punjabi";
         }
 
         public DoTask FocusAction(DoTask doTask)
@@ -130,7 +143,6 @@ namespace VCELL_Emulator
 
         public void ActivateLoop()
         {
-            
             switch (this.Alive)
             {
                 case true:
@@ -183,7 +195,7 @@ namespace VCELL_Emulator
     delegate bool FindVNode(VNode vNode);
     class AI_EXTENSION
     {
-        public static VNode[] where(VNode[] vNodes, FindVNode del)
+        public static VNode[] Wereu(VNode[] vNodes, FindVNode del)
         {
             int i = 0;
             List<VNode> results = new List<VNode>();

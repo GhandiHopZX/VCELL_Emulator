@@ -15,7 +15,7 @@ namespace VCELL_Emulator
         public List <VNode> MemTup = new List<VNode>(50); // size of Overallmemory
         
         delegate void VNodeDelegate(VNode vNodeD);
-        public void Load()
+        private void Load()
         {
             StreamReader reader = new StreamReader(@"C:*\\VCELL_Emulator\VCELL_Emulator\MemSav0.json");
             JsonReader jreader;
@@ -36,7 +36,7 @@ namespace VCELL_Emulator
             jreader.Close();
         }
 
-        public void Save()
+        private void Save()
         {
             StreamWriter writer = new StreamWriter(@"C:\\VCELL_Emulator\VCELL_Emulator\MemSav0.json");
             JsonWriter jwriter;
@@ -50,7 +50,7 @@ namespace VCELL_Emulator
             jwriter.Close();
         }
 
-        public async void MethodRem(VNode[] m, Stack<Task> ts, int w)
+        private async void MethodRem(VNode[] m, Stack<Task> ts, int w)
         {
             await Recall(m, ts, w);
             Console.WriteLine("Recalling..." + PlaceF().ToString());
@@ -61,7 +61,7 @@ namespace VCELL_Emulator
             return this.MemTup[0].ToString();
         }
 
-        public Task PlaceF(int e) // change to VNode
+        private Task PlaceF(int e) // change to VNode
         {
             return Task.Run(() => { Thread.Sleep(5000); return 1; });
         }
@@ -91,7 +91,7 @@ namespace VCELL_Emulator
             }
         }
 
-        public Stack<Task> PlaceBack(Stack<Task> e)
+        private static Stack<Task> PlaceBack(Stack<Task> e)
         {
             return e;
         }
