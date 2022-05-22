@@ -8,6 +8,8 @@ namespace VCELL_Emulator
         {
             #region Am's brain
             dynamic dynamicvar = 233;
+            int? Coup = null;
+            int ava = Coup ?? 0; // null coalescing operator
             Console.WriteLine("Val :", dynamicvar);
             var myAnnon = new
             {
@@ -17,9 +19,23 @@ namespace VCELL_Emulator
             };
             AI Am = new AI("Am", 8, false);
             
-            for (int i = 0; i < 5; i++)
-            {
+            int? iex = null; // nullable
+            bool? ClearedGateExam = null;
 
+            if(ClearedGateExam == true)
+            {
+                Console.WriteLine("User Cleared Gate Exam.");
+            }
+            else if(ClearedGateExam == false)
+            {
+                Console.WriteLine("User failed Gate Exam.");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.WriteLine("User did not file.");
+                Console.ResetColor();
             }
             #endregion
             

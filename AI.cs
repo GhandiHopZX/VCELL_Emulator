@@ -9,6 +9,7 @@ namespace VCELL_Emulator
     partial class AI : VCELL
     {
         #region properties
+        readonly bool meal;
         string name;
         bool alive;
         int priorityLvl;
@@ -52,6 +53,7 @@ namespace VCELL_Emulator
             Name = Inin;
             // VCELL Time
             Alive = Active;
+            meal = true; // you can only assign readonly vars using non-static constructors 
             if(Alive == false)
             {
                 Console.WriteLine("I'm StillBorn...");

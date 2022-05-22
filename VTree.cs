@@ -45,6 +45,7 @@ namespace VCELL_Emulator
                 d = GetRootNodes1()[lastItem];
             }
         }
+        #region capmethods
 
         public enum ALLPRISMAFORMS
         {
@@ -136,7 +137,7 @@ namespace VCELL_Emulator
                 _ => inc.previous,
             };
         }
-
+        #endregion
         public void Insert(VNode dataIn, int weher)
         {
             GetVaccumNodes1()[weher] = dataIn;
@@ -220,6 +221,7 @@ namespace VCELL_Emulator
                     {
                         ++nodeCount;
                         Bottom.SetL(GetCommonNodes1()[i]);
+
                     }
                     else if (Top.GetR().data == null)
                     {
@@ -354,6 +356,8 @@ namespace VCELL_Emulator
                     GetFinalCurrent1().SetNext(Bottom);
                 }
             }
+
+
 
             //prismatime
             PrismaLvl = nodeCount switch
