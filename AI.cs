@@ -65,7 +65,8 @@ namespace VCELL_Emulator
         {
             AVCELL.SetName1("");
             AVCELL.SetSpeed(9);
-            bool isV = (AVCELL is VCELL);
+            bool isV = AVCELL
+                       is VCELL;
             Console.WriteLine("THis is a VCELL");
             Console.WriteLine("vabidabi punjabi?: {0}",
                 ChackValidabaidi(AVCELL));
@@ -73,10 +74,9 @@ namespace VCELL_Emulator
 
         public static string ChackValidabaidi(dynamic obj)
         {
-            VCELL fe = obj as VCELL;
-            if (fe != null)
+            if (obj is VCELL fe)
             {
-                return "Checkenn :" + fe.GetName1(); 
+                return "Checkenn :" + fe.GetName1();
             }
             return "Not a Punjabi";
         }
@@ -153,12 +153,13 @@ namespace VCELL_Emulator
 
                     //annonymous function. Monitor?
 
-                    VNodeDelegate vNodeDelegate = 
-                        delegate (VNode vNode) 
-                        { 
-                            Console.WriteLine
-                            ("bloop", action.ToString(), vNode.name); 
-                        };
+                    VNodeDelegate value = delegate (VNode vNode)
+                                            {
+                                                Console.WriteLine
+                                                ("bloop", action.ToString(), vNode.name);
+                                            };
+                    VNodeDelegate vNodeDelegate =
+                        value;
 
                     bool canRun = tasks.TryPop(out action);
                     if (canRun != true)

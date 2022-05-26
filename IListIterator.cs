@@ -1,3 +1,4 @@
+//#define meep
 using System;
 namespace VCELL_Emulator
 {
