@@ -49,6 +49,26 @@ namespace VCELL_Emulator
 
         public AI(string Inin, int NodesAdd, bool Active)
         {
+            List<int> arre = new();
+            int[] m = arre.ToArray();
+            int y = m.ToArray().Count();
+            var ev = m.ElementAt(y);
+
+            Dictionary<int, string> dicint = new Dictionary<int, string>()
+            {
+                [1] = "C#" , // direct key assign/better read
+                [2] = "Asp.net MVC" ,
+                [3] = "Html" ,
+                [4] = "Java Script" ,
+                [5] = "JQuery",
+                //{ 6, "gai" }, this is the other way
+            };
+
+            foreach(var item in dicint)
+            {
+                Console.WriteLine(item.Key+" "+item.Value);
+            }
+
             DoThought doThought = new(ActivateLoop);
             Name = Inin;
             // VCELL Time
