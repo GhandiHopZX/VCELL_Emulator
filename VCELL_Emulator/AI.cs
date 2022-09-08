@@ -6,27 +6,35 @@ using System.Threading.Tasks;
 
 namespace VCELL_Emulator
 {
-    partial class AI
+    partial class AI : VCELL
     {
         #region properties
+        readonly bool meal;
         string name;
         bool alive;
         int priorityLvl;
+        VCELL AVCELL = new VCELL();
         Type typeChek = typeof(DoThought);
-        VTree MyNodes;
+        // self identitiy Influencers
+        Id id = new Id();
+        Ego ego = new Ego();
+        // 
+
         private VNode[] AddedNodes = Array.Empty<VNode>(); // put stuff in here or in the constructor
         Stack<Action> tasks;
         private List<Action> savedActions;
         private List<Action> tempActions;
         Stack<Think> thoughts;
-
+        MemoryBank MemoryBank;
         //public MemoryBank Memories = new MemoryBank(); this will exist inside TaskBase
 
         delegate void VNodeDelegate(VNode vNodeD);
         public string Name { get => name; set => name = value; }
         public bool Alive { get => alive; set => alive = value; }
-        public int PriorityLvl { get => priorityLvl; set => priorityLvl = value; }
-        public VNode[] AddedNodes1 { get => AddedNodes; set => AddedNodes = value; }
+        public int PriorityLvl { get => priorityLvl; 
+            set => priorityLvl = value; }
+        public VNode[] AddedNodes1 { get => AddedNodes;
+            set => AddedNodes = value; }
         public Type Typey { get; set; }
 
         public Type GetTypeChek()
@@ -48,10 +56,32 @@ namespace VCELL_Emulator
 
         public AI(string Inin, int NodesAdd, bool Active)
         {
+            List<int> arre = new();
+            int[] m = arre.ToArray();
+            int y = m.ToArray().Count();
+            var ev = m.ElementAt(y);
+
+            Dictionary<int, string> dicint = new Dictionary<int, string>()
+            {
+                [1] = $"C#{y}" , // direct key assign/better read
+                [2] = String.Format("{0}Asp.net {1}MVC",y,ev) ,
+                [3] = "Html" ,
+                [4] = "Java Script" ,
+                [5] = "JQuery",
+                //{ 6, "gai" }, this is the other way
+            };
+
+            foreach(var item in dicint)
+            {
+                Console.WriteLine(nameof(item.Key)+" : "+item.Key+
+                    "\n"+nameof(item.Value) + " : "+item.Value);
+            }
+
             DoThought doThought = new(ActivateLoop);
             Name = Inin;
-            MakeNodes(NodesAdd);
+            // VCELL Time
             Alive = Active;
+            meal = true; // you can only assign readonly vars using non-static constructors 
             if(Alive == false)
             {
                 Console.WriteLine("I'm StillBorn...");
@@ -59,23 +89,24 @@ namespace VCELL_Emulator
             doThought(); //put this in different places
         }
 
-        public void MakeNodes(int IM)
+        public void VInitializer()
         {
-            for(int i= 0; i < IM; i++)
-            {
-               VNode vNode = new VNode();
-                vNode.data = "Empty";
-                vNode.name = new Random(0235).ToString();
-                vNode.uAddr.Trim();
-                vNode.name.Trim();
-                MyNodes.Insert(vNode);
-            }
+            AVCELL.SetName1("");
+            AVCELL.SetSpeed(9);
+            bool isV = AVCELL
+                       is VCELL;
+            Console.WriteLine("THis is a VCELL");
+            Console.WriteLine("vabidabi punjabi?: {0}",
+            ChackValidabaidi(AVCELL));
         }
-        public void Identity() // this is based on properties and can change
+
+        public static string ChackValidabaidi(dynamic obj)
         {
-            // your environment shapes your identity
-            // this is id, ego, and superego
-            
+            if (obj is VCELL fe)
+            {
+                return "Checkenn :" + fe.GetName1();
+            }
+            return "Not a VCELL";
         }
 
         public DoTask FocusAction(DoTask doTask)
@@ -94,7 +125,7 @@ namespace VCELL_Emulator
             return doTask;
         }
 
-        private DoTask ExecuteAction(Action ina)
+        private DoTask ExecuteAction(Action ina) // THIS just checks for what is saved
         {
             if (!ina.Equals(savedActions.BinarySearch(ina)))
             {
@@ -106,7 +137,7 @@ namespace VCELL_Emulator
 
         public void CallRoutine() // calls a set of actions
         {
-            
+            ExecuteAction(tasks.Pop()).Invoke();
         }
 
         public virtual void Thinking()
@@ -142,7 +173,6 @@ namespace VCELL_Emulator
 
         public void ActivateLoop()
         {
-            
             switch (this.Alive)
             {
                 case true:
@@ -151,12 +181,13 @@ namespace VCELL_Emulator
 
                     //annonymous function. Monitor?
 
-                    VNodeDelegate vNodeDelegate = 
-                        delegate (VNode vNode) 
-                        { 
-                            Console.WriteLine
-                            ("bloop", action.ToString(), vNode.name); 
-                        };
+                    VNodeDelegate value = delegate (VNode vNode)
+                         {
+                             Console.WriteLine
+                             ("bloop", action.ToString(), vNode.name);
+                         };
+                    VNodeDelegate vNodeDelegate =
+                        value;
 
                     bool canRun = tasks.TryPop(out action);
                     if (canRun != true)
@@ -178,7 +209,9 @@ namespace VCELL_Emulator
     delegate bool FindVNode(VNode vNode);
     class AI_EXTENSION
     {
-        public static VNode[] where(VNode[] vNodes, FindVNode del)
+        // all this does is find nodes and put them in an array
+        // and then shits out the array
+        public static VNode[] Wereu(VNode[] vNodes, FindVNode del)
         {
             int i = 0;
             List<VNode> results = new List<VNode>();
@@ -194,4 +227,5 @@ namespace VCELL_Emulator
             return results.ToArray();
         }
     }
+
 }

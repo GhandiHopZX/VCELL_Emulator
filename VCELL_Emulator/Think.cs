@@ -9,5 +9,10 @@
             object[] stimF; // felt
             object[] stimTh; // thought(s)
             object[] stimH; // heard
+
+            public void e(int t)
+            {
+                
+            }
         }
 }

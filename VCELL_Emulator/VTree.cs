@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VCELL_Emulator
 {
@@ -16,6 +18,40 @@ namespace VCELL_Emulator
         // comes out later when the nodes increase in numbers. But only by 2
 
         private List<VNode> RootNodes; // always only 2
+
+        private List<VNode> Links;
+
+        IEnumerable VNCore;
+
+        public VTree(int nc, VNode starter) // no more null
+        {
+            starter.uAddr = "0000";
+            starter.data = new byte[nc];
+            starter.name = "one";
+            starter.statData = 0;
+
+            var TempNode = new VNode();
+            _ = new VNode();
+            VNode d = new VNode();
+            int lastItem = GetRootNodes1().Capacity;
+
+            TempNode.data = starter.data;
+            //TempNode.SetL(null);
+            //TempNode.SetR(null);
+
+            // if tree is empty, create root node
+            if (GetRootNodes1().Capacity == 0) // we need 2
+            {
+                GetRootNodes1().Add(TempNode);
+                GetRootNodes1().Add(TempNode);
+            }
+            else
+            {
+                _ = GetRootNodes1()[0];
+                d = GetRootNodes1()[lastItem];
+            }
+        }
+        #region capmethods
 
         public enum ALLPRISMAFORMS
         {
@@ -107,36 +143,30 @@ namespace VCELL_Emulator
                 _ => inc.previous,
             };
         }
+        #endregion
 
-        public void Insert(VNode dataIn)
+        public int modulus(int a, int b, int k, int left, int right)
         {
-            var TempNode = new VNode();
-            _ = new VNode();
-            _ = new VNode();
-            int lastItem = GetRootNodes1().Capacity;
-
-            TempNode.data = data;
-            TempNode.SetL(null);
-            TempNode.SetR(null);
-
-            // if tree is empty, create root node
-            if (GetRootNodes1().Capacity == 0) // we need 2
+            right = a;
+            while (left < right)
             {
-                GetRootNodes1().Add(TempNode);
-                GetRootNodes1().Add(TempNode);
-            }
-            else
-            {
-                _ = GetRootNodes1()[0];
-                _ = GetRootNodes1()[lastItem];
+                int m = (left + right) / 2;
+                if (a - m * b >= b)
+                    left = m + 1;
+                else
+                    right = m;
             }
 
-            GetVaccumNodes1().Add(dataIn);
+            return a - left * b;
+        }
+        public void Insert(VNode dataIn, int weher)
+        {
+            GetVaccumNodes1()[weher] = dataIn;
 
-            Prismatize();
+            Prismatize(GetFinalCurrent());
         }
 
-        public void TraverseCount()
+        public void TraverseCountAndCleanNonNulls()
         {
             // vars
             nodeCount = 0;
@@ -195,7 +225,13 @@ namespace VCELL_Emulator
             }
             return UNPG = false;
         }
-        public void Prismatize() // puts the tree into a shape category
+
+        public VNode GetFinalCurrent()
+        {
+            return FinalCurrent;
+        }
+
+        public void Prismatize(VNode finalCurrent) // puts the tree into a shape category
         {
             // vars
             int lastRoot = GetRootNodes1().Capacity;
@@ -212,6 +248,7 @@ namespace VCELL_Emulator
                     {
                         ++nodeCount;
                         Bottom.SetL(GetCommonNodes1()[i]);
+
                     }
                     else if (Top.GetR().data == null)
                     {
@@ -281,34 +318,47 @@ namespace VCELL_Emulator
             // to the core nodes /
             // to the l then r of the root top
             // then the top again /
-            for (int f = 0; d >= f; f++)
+            for (int f = 0; d > f; f++)
             // 1 2 3
             {
                 if (GetRootNodes1().Capacity != 0)
                 {
                     Top = GetRootNodes1()[d];
+                    
+                    Links.Add(Top);
+
                     GetFinalCurrent1().SetNext(GetRootNodes1()[d]); // top
                     if (GetRootNodes1().Capacity == 1)
                     {
                         Bottom = GetRootNodes1()[lastItem];
-                        GetFinalCurrent1().SetNext(GetRootNodes1()[d]); // bottom
+                        Links.Add(Bottom);
+                        GetFinalCurrent1().SetNext(GetRootNodes1()[d]); // bottom'
+                        Links.Add(GetRootNodes1()[d]);
                         GetFinalCurrent1().SetL(GetRootNodes1()[d].GetL());
+                        Links.Add(GetRootNodes1()[d].GetL());
                         GetFinalCurrent1().SetR(GetRootNodes1()[d].GetR());
+                        Links.Add(GetRootNodes1()[d].GetR());
                     }
+
                 }
                 if (GetRootNodes1().Capacity == 0 && GetCommonNodes1().Capacity != 0)
                 {
                     GetFinalCurrent1().SetNext(GetCommonNodes1()[d]);
+                    Links.Add(GetCommonNodes1()[d]);
                 }
                 if (GetRootNodes1().Capacity == 0 && GetCommonNodes1().Capacity == 0 && GetCoreNodes1().Capacity != 0)
                 {
                     GetFinalCurrent1().SetNext(GetCoreNodes1()[d]);
+                    Links.Add(GetRootNodes1()[d]);
                 }
                 if (GetRootNodes1().Capacity == 0 && GetCommonNodes1().Capacity == 0 && GetCoreNodes1().Capacity == 0)
                 {
                     GetFinalCurrent1().SetNext(Top.GetL());
+                    Links.Add(Top.GetL());
                     GetFinalCurrent1().SetNext(Top.GetR());
+                    Links.Add(Top.GetR());
                     GetFinalCurrent1().SetNext(Top);
+                    Links.Add(Top.GetNext());
                 }
             }
             // ============================
@@ -317,34 +367,48 @@ namespace VCELL_Emulator
             // top then bottom again/
             // and overlay the two connection flows/
             // 3 2 1
-            for (int g = 0; d <= g; --d)
+            for (int g = 0; d < g; --d)
             {
                 if (GetRootNodes1().Capacity != 0)
                 {
-                    Top = GetRootNodes1()[g];
+                    Bottom = GetRootNodes1()[g];
+                    // dont add anything twice for links
                     GetFinalCurrent1().SetNext(GetRootNodes1()[g]); // bottom
                     if (GetRootNodes1().Capacity == 1)
                     {
                         Top = GetRootNodes1()[0];
                         GetFinalCurrent1().SetNext(GetRootNodes1()[g]); // Top
                         GetFinalCurrent1().SetL(GetRootNodes1()[g].GetL());
+                        Links.Add(GetRootNodes1()[g].GetL());
                         GetFinalCurrent1().SetR(GetRootNodes1()[g].GetR());
+                        Links.Add(GetRootNodes1()[g].GetR());
                     }
                 }
                 if (GetRootNodes1().Capacity == 0 && GetCommonNodes1().Capacity != 0)
                 {
                     GetFinalCurrent1().SetNext(GetCommonNodes1()[g]);
+                    Links.Add(GetCommonNodes1()[g]);
                 }
                 if (GetRootNodes1().Capacity == 0 && GetCommonNodes1().Capacity == 0 && GetCoreNodes1().Capacity != 0)
                 {
                     GetFinalCurrent1().SetNext(GetCoreNodes1()[g]);
+                    Links.Add(GetCoreNodes1()[g]);
                 }
                 if (GetRootNodes1().Capacity == 0 && GetCommonNodes1().Capacity == 0 && GetCoreNodes1().Capacity == 0)
                 {
                     GetFinalCurrent1().SetNext(Bottom.GetL());
+                    Links.Add(Bottom.GetL());
                     GetFinalCurrent1().SetNext(Bottom.GetR());
+                    Links.Add(Bottom.GetR());
                     GetFinalCurrent1().SetNext(Bottom);
                 }
+
+                //CoreNodes[0]; I'll use this for now
+                VNCore = from s in Links
+                             select new { 
+                                 St = GetFinalCurrent()
+                             }; //GetFinalCurrent();
+                
             }
 
             //prismatime

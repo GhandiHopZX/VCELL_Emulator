@@ -47,8 +47,15 @@ namespace VCELL_Emulator
                 }
             }
         }
-        //public float Sum(IEnumerable<float> value, IReadOnlyList<float> weights) =>
-            //values.Select((v, i) => v * weights.Select(i)).Sum(); // .Sum() didn't work
+        //public float Sum(IEnumerable<float> value, IReadOnlyList<float> weights)
+        //{
+        //    int i = 0;
+        //    if (value is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(value));
+        //    }
+        //    return weights[i] * value;
+        //}
 
         private static float SigmoidL(float x) => 1f / (1f + (float)Math.Exp(-x));
 
