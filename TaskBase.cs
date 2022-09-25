@@ -1,7 +1,8 @@
 ﻿//#define an
 
 using System;
-using System.Collections; // do this in order to use ArrayList and other cool things 
+using System.Collections; // do this in order to use ArrayList
+                          // and other cool things 
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,17 +11,20 @@ namespace VCELL_Emulator
 {
     public partial class TaskBase
     {
-        public MemoryBank Memories = new MemoryBank();
+        public MemoryBank Memories = new ();
         delegate void presetTaskLookup(Action task);
         delegate void presetThinkLookup(Think task);
-        public Action eAction { get; set; }
+        public Action EAction { get; set; }
         public Predicate<Action> ishappen;
         public Think Think { get; set; }
-        public Action Action { get; private set; }
+        public Action<int, Action> Calls
+        { get => action; set => action = value; }
+        public System.Action SysAction 
+        { get => sysAction1; set => sysAction1 = value; }
 
         System.Action sysAction1;
-        System.Action<int> action; // arraylistdemo
-        enum thang
+        Action<int, Action> action; // arraylistdemo
+        enum Thang
         {
             ACT,
             ATTACK,
@@ -30,7 +34,6 @@ namespace VCELL_Emulator
             HEAR,
             RECOG
         };
-
         public TaskBase this[int index]
         {
             get
@@ -42,33 +45,14 @@ namespace VCELL_Emulator
                 this[index] = value;
             }
         }
+        public static T TempA<T>(Func<T> action)
+        {
+            return action();
+        }
 
-        // public Action action2(int e) // action delegate
-        // {
-        // same type and parameters
-        //   List<Action> actions2
-        // {
-        ///    new Action()
-        ////]]/    {
-        //       grabPresetTaskList(e),
-        //        "boppin",
-        //10,
-        //        thang.ACT
-        ///  },
-        //    new Action()
-        //    {
-        //        ishappen,
-        //       "w",
-        //       1,
-        //        thang.HEAR
-        //    }
-        //}
-        // return actions2[3].;
-        //  }
-
-#if (true)
-#else
-#endif
+        #if (true)
+        #else
+        #endif
 
         public Action FetchAction(int e)
         {
@@ -77,12 +61,15 @@ namespace VCELL_Emulator
             int[] nums = { 1, 3, 5, 6, -2, 4 };
 
             //method syntax
-            var nummeth = nums.Where(x => (x % 2 == e)).OrderBy(x => x);
+            var nummeth = nums.Where
+                (x => (x % 2 == e)).OrderBy(x => x);
 
             var positiveNums = from n in nums
                                where n > 0
-                               select n; // using linq u can select and order data from 
-                                         // different data types and use them accordingly
+                               select n; // using linq u can select
+                                         // and order data from 
+                                         // different data types and
+                                         // use them accordingly
             var acsPosNums = from n in nums // data 
                              orderby n ascending // sort/arg
                              select n; // selection
@@ -96,10 +83,6 @@ namespace VCELL_Emulator
             foreach (var ec in cars)
             {
                 Console.WriteLine("Group Name = " + ec.Key);
-                //foreach (string ec in cars)
-                //{
-                //  Console.WriteLine("\t" + ec);
-                //}
             }
 
             foreach (var vefer in acsPosNums)
@@ -113,14 +96,13 @@ namespace VCELL_Emulator
                                  r = s[0],
                                  rName = s.ToString()
                              };
-
-#if (true)
-#endif
+            #if (true)
+            #endif
 
 
             #endregion
 
-            return this[e].Action;
+            return this[e].EAction;
         }
 
         public Think FetchThought(int e)
@@ -128,30 +110,33 @@ namespace VCELL_Emulator
             return this[e].Think;
         }
 
-        public Action grabPresetTaskList(int e)
+        public Action GrabPresetTaskList(int e)
         {
-            List<Action> redundants = new List<Action>();
+            List<Action> redundants = new ();
             int redundaC = 0;
 
             Action[] tasks =
             {
                 new Action()
                 {
-                idea = memoryThinkTank
+                idea = MemoryThinkTank
                 (e, ea: Memories), what = "Walk_Around", times = 1,
                 //thang.ACT
                 }
             };
 
-            Action[] actions = tasks.Where(s => s.times > 13).ToArray();
+            Action[] actions = tasks.Where
+                (s => s.times > 13).ToArray();
 
             //string[] stall = tasks.Where(s =>
             //{
-            // bool v = s.what == "still";//|| "stall" || "wait" || " " || "" || "waiting";
+            // bool v = s.what == "still";//|| "stall" ||
+            // "wait" || " " || "" || "waiting";
 
             //}).FirstOrDefault();
 
-            //String doing = tasks.Where(s => s.times == 20).FirstOrDefault();
+            //String doing = tasks.Where
+            //(s => s.times == 20).FirstOrDefault();
 
             foreach (Action action in tasks)
             {
@@ -160,21 +145,24 @@ namespace VCELL_Emulator
             }
 
             redundants.Clear();
-            Console.WriteLine(redundaC + " : " + "redundancies cleared");
+            Console.WriteLine(redundaC + " : "
+                + "redundancies cleared");
             return tasks[e]; // predicate delagate checks for
             // relevant data or criterion
         }
 
-        public static Think memoryThinkTank(int e, MemoryBank ea)
+        public static Think MemoryThinkTank(int e, MemoryBank ea)
         {
             return ea.MemTup[e].thinke;
         }
 
         #region basic funcions
-        public static void arrayListDemo()
+        public static void ArrayListDemo()
         {
-            ArrayList arrayList = new ArrayList();
-            arrayList.Add("me");
+            ArrayList arrayList = new()
+            {
+                "me"
+            };
 
             arrayList.Insert(1, "efm");
 

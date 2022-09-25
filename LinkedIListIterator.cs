@@ -4,11 +4,11 @@ namespace VCELL_Emulator
 {
     public class LinkedIListIterator : IListIterator
     {
-                private VNode position;
-                private bool isAfterPrevious;
-                private bool isAfterNext;
-                private VNode first;
-                private VNode last;
+        private VNode position;
+        private bool isAfterPrevious;
+        private bool isAfterNext;
+        private VNode first;
+        private VNode last;
 
         public VNode GetFirst()
         {

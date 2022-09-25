@@ -38,7 +38,7 @@ namespace VCELL_Emulator
 
         private void Save()
         {
-            StreamWriter writer = new StreamWriter(@"C:\\VCELL_Emulator\VCELL_Emulator\MemSav0.json");
+            StreamWriter writer = new StreamWriter(@"C:*\\VCELL_Emulator\VCELL_Emulator\MemSav0.json");
             JsonWriter jwriter;
             // this is the Writing function
             using (jwriter = new JsonTextWriter(writer))

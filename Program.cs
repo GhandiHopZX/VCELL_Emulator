@@ -11,6 +11,7 @@ namespace VCELL_Emulator
             int? Coup = null;
             int ava = Coup ?? 0; // null coalescing operator
             Console.WriteLine("Val :", dynamicvar);
+            Console.WriteLine(GetTime());
             var myAnnon = new
             {
                 name = "thing",
@@ -18,15 +19,15 @@ namespace VCELL_Emulator
                 currentVer = 6.0
             };
             AI Am = new AI("Am", 8, false);
-            
+
             int? iex = null; // nullable
             bool? ClearedGateExam = null;
 
-            if(ClearedGateExam == true)
+            if (ClearedGateExam == true)
             {
                 Console.WriteLine("User Cleared Gate Exam.");
             }
-            else if(ClearedGateExam == false)
+            else if (ClearedGateExam == false)
             {
                 Console.WriteLine("User failed Gate Exam.");
             }
@@ -38,8 +39,12 @@ namespace VCELL_Emulator
                 Console.ResetColor();
             }
             #endregion
-            
+
             Console.WriteLine("Hello World!");
         }
+        public static string GetTime() => "Current Time : -" 
+            + DateTime.Now.ToString("F") +"\n"
+            + DateTime.Now.ToString("gg") +"\n"
+            + DateTime.Now.ToString("G");
     }
 }
