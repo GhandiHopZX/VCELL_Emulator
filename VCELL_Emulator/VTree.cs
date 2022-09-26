@@ -9,7 +9,7 @@ namespace VCELL_Emulator
     {
         private bool UNPG; // true if you have unallocated node points given and stored in the vaccum
         private int nodeCount;
-        private VNode FinalCurrent = new();
+        private VNode FinalCurrent; // Final Core Of Recursion
         private List<VNode> CoreNodes; // middle nodes
 
         private List<VNode> CommonNodes; // anywhere else
@@ -17,11 +17,23 @@ namespace VCELL_Emulator
         private List<VNode> VaccumNodes; // internal nodes that anything that doesn't fit the shape category
         // comes out later when the nodes increase in numbers. But only by 2
 
-        private List<VNode> RootNodes; // always only 2
+        private List<VNode> RootNodes; // always only 2 nodes ever
 
         private List<VNode> Links;
 
-        IEnumerable VNCore;
+        IEnumerable VNCore; // idk
+
+        public enum EDir
+        {
+            up = 0, // |
+            dal = 1, // \
+            left = 2, // <-
+            dnl = 3, // /
+            down = 4, // |
+            dnr = 5, // \
+            right = 6, // ->
+            dar = 7, // /
+        }
 
         public VTree(int nc, VNode starter) // no more null
         {
@@ -70,6 +82,7 @@ namespace VCELL_Emulator
         {
             get; set;
         }
+        public IEnumerable VNCore1 { get => VNCore; set => VNCore = value; }
 
         public bool GetUNPG1()
         {
@@ -145,9 +158,43 @@ namespace VCELL_Emulator
         }
         #endregion
 
-        public int modulus(int a, int b, int k, int left, int right)
+        public static int PosMod(int a, int b, int left, int right, EDir dir)
         {
-            right = a;
+            switch(dir)
+            {
+                case EDir.up:
+                    return Math.Abs(a + b);
+
+                case EDir.dal:
+                    return Math.Abs(left - a - b);
+
+                case EDir.left:
+                    return Math.Abs(left);
+
+                case EDir.dnl:
+                    return Math.Abs(left - a);
+
+                case EDir.down:
+                    return Math.Abs(b - a);
+
+                case EDir.dnr:
+                    return Math.Abs(right + b);
+
+                case EDir.right:
+                    return Math.Abs(right);
+
+                case EDir.dar:
+                    return Math.Abs(right + b - a);
+            }
+            if (left == 0)
+            {
+                left = a;
+            }
+            return a * b + left;
+        }
+        public static int Modulus(int a, int b ,int left)
+        {
+            int right = a;
             while (left < right)
             {
                 int m = (left + right) / 2;
@@ -156,7 +203,6 @@ namespace VCELL_Emulator
                 else
                     right = m;
             }
-
             return a - left * b;
         }
         public void Insert(VNode dataIn, int weher)
@@ -165,13 +211,61 @@ namespace VCELL_Emulator
 
             Prismatize(GetFinalCurrent());
         }
-
+        public void TraverseNodesAndCleanNulls()
+        {
+            VNode cpy = FinalCurrent;
+            //find a way to traverse through the Core and Common Nodes
+            do
+            {
+                if (cpy.GetL().data == null)
+                {
+                    cpy.GetL().DeleteNode();
+                    //++nodeCount;
+                }
+                else if (cpy.GetR().data == null)
+                {
+                    cpy.GetR().DeleteNode();
+                    //++nodeCount;
+                }
+                else if (cpy.GetNext().GetL().data == null)
+                {
+                    cpy.GetNext().GetL().DeleteNode();
+                    //++nodeCount;
+                }
+                else if (cpy.GetNext().GetR().data == null)
+                {
+                    cpy.GetNext().GetL().DeleteNode();
+                    //++nodeCount;
+                }
+                // root top and bottom finished..
+                else
+                {
+                    // loop here all common Nodes
+                    if (cpy.GetNext().data == null)
+                    {
+                        if (cpy.GetL().data == null)
+                        {
+                            //++nodeCount;
+                        }
+                        else if (cpy.GetR().data != null)
+                        {
+                            //++nodeCount;
+                        }
+                        //end
+                        if (cpy.data == null)
+                        {
+                            cpy.DeleteNode();
+                        }
+                    }
+                }
+            } while (FinalCurrent != null);
+        }
         public void TraverseCountAndCleanNonNulls()
         {
             // vars
             nodeCount = 0;
             VNode Fcpy = FinalCurrent;
-            //find a way to traverse through the FinalCurrent Node
+            //find a way to traverse through the FinalCurrent Node 
             do
             {
                 if (Fcpy.GetL().data != null)
@@ -225,12 +319,10 @@ namespace VCELL_Emulator
             }
             return UNPG = false;
         }
-
         public VNode GetFinalCurrent()
         {
             return FinalCurrent;
         }
-
         public void Prismatize(VNode finalCurrent) // puts the tree into a shape category
         {
             // vars
@@ -404,7 +496,7 @@ namespace VCELL_Emulator
                 }
 
                 //CoreNodes[0]; I'll use this for now
-                VNCore = from s in Links
+                VNCore1 = from s in Links
                              select new { 
                                  St = GetFinalCurrent()
                              }; //GetFinalCurrent();

@@ -1,4 +1,5 @@
-﻿namespace VCELL_Emulator
+﻿
+namespace VCELL_Emulator
 {
         ///
         /// <Summary>
@@ -11,13 +12,17 @@
             public Think idea;
             public string what;
             public int times;
+            private System.Action sAction;
+
+            public System.Action SAction { get => sAction; set => sAction = value; }
+
             public enum thing  
             {
                 ACT,
                 ATTACK,
                 TALK,
                 THINK,
-                FEEL, // aparatus operandi
+                FEEL,  //=>// aparatus operandi
                 HEAR,
                 RECOG, // refers to the cognative processes and calls
                        // anything related to relevent data. eg. answers, solutions
