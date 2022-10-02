@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace VCELL_Emulator
 {
@@ -66,8 +67,6 @@ namespace VCELL_Emulator
 
         public AI(string Inin, int NodesAdd, bool Active)
         {
-            //addNodes(NodesAdd);
-
             DoThought doThought = new(ActivateLoop);
             Name = Inin;
             // VCELL Time
@@ -93,17 +92,24 @@ namespace VCELL_Emulator
             }
             return "Not a VCELL";
         }
-        public static DoTask FocusAction(DoTask doTask)
+        public DoTask FocusAction(DoTask doTask)
         {
             if(doTask.GetInvocationList().Any())
             {
                 // then continue
                 {
-                    object em = doTask.Method;
+                    Delegate emo = doTask;
                     // parse em and see what's inside
-                    // then create a method of service
-                    // invoke at the 
-                    // runtime
+                    for (int i = 0; i < tasks.Count; i++)
+                    {
+                        if (emo.Method.IsDefined(doTask.GetType()))
+                        {
+                            // then create a method of service
+                           emo = InAction.CreateDelegate(emo.Method.GetType()
+                               ,doTask.GetMethodInfo(),false);
+                           doTask = (DoTask)emo.DynamicInvoke();
+                        }
+                    }
                 }
             }
             return doTask;
@@ -141,12 +147,12 @@ namespace VCELL_Emulator
                     {
                         task.E(PriorityLvl); // property "stimTh" now altered
                                              // search for a task that is similar to it
-                        if (this.tasks.Contains(task.InMind))
+                        if (tasks.Contains(task.InMind))
                         {
                             task.InMind.SAction.Invoke();
 
-                            this.tasks.Push(task.InMind);
-                            this.tasks.Pop();
+                            tasks.Push(task.InMind);
+                            tasks.Pop();
                             thoughts.Pop();
                         }
                     }
@@ -217,7 +223,8 @@ namespace VCELL_Emulator
     {
         // all this does is find nodes and put them in an array
         // and then shits out the array
-        public static VNode[] Wereu(VNode[] vNodes, FindVNode del)
+        public static VNode[] Wereu(VNode[] vNodes,
+            FindVNode del)
         {
             int i = 0;
             List<VNode> results = new();

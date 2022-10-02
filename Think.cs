@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.ML;
 
 namespace VCELL_Emulator
@@ -20,11 +21,11 @@ namespace VCELL_Emulator
          {
             var emn = 0.0;
             var deth = 0.0;
-             foreach (int o in StimTh)
+             foreach (int o in StimTh.Select(v => (int)v))
              {
                 Linked.Add(StimTh[o]);
-                emn = (int)Math.Cos((double)StimTh[o]) ^ t;
-                deth = (int)Math.Cos((double)StimTh[o]) ^ -t;
+                emn = (int)Math.Cos(StimTh[o]) ^ t;
+                deth = (int)Math.Sin(StimTh[o]) ^ -t;
                 StimTh[o] = (emn + deth / 2);
              }
          }
