@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VCELL_Emulator
 {
-    internal class LVQ
+    public class LVQ
     {
         short w1;
         short w2;

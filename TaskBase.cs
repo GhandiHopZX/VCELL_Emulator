@@ -128,15 +128,6 @@ namespace VCELL_Emulator
             Action[] actions = tasks.Where
                 (s => s.times > 13).ToArray();
 
-            //string[] stall = tasks.Where(s =>
-            //{
-            // bool v = s.what == "still";//|| "stall" ||
-            // "wait" || " " || "" || "waiting";
-
-            //}).FirstOrDefault();
-
-            //String doing = tasks.Where
-            //(s => s.times == 20).FirstOrDefault();
 
             foreach (Action action in tasks)
             {

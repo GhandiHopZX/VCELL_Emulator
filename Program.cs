@@ -18,7 +18,7 @@ namespace VCELL_Emulator
                 age = 2,
                 currentVer = 6.0
             };
-            AI Am = new AI("Am", 8, false);
+            AI Am = new ("Am", 8, false);
 
             int? iex = null; // nullable
             bool? ClearedGateExam = null;

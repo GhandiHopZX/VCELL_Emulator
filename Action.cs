@@ -12,11 +12,11 @@ namespace VCELL_Emulator
             public Think idea;
             public string what;
             public int times;
-        private System.Action sAction;
+            private System.Action sAction;
 
-        public System.Action SAction { get => sAction; set => sAction = value; }
+            public System.Action SAction { get => sAction; set => sAction = value; }
 
-        public enum thing  
+            public enum thing  
             {
                 ACT,
                 ATTACK,

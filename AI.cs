@@ -129,18 +129,31 @@ namespace VCELL_Emulator
             AsyncCallback callback; // whenever a routine is complete call this.
             AsyncCallback watch; // lookat a specific att
 
-            Span<Action> span;
-
+            Span<Think> spant = thoughts.ToArray();
+            Think []Spant2 = InputData.Thoughts.ToArray();
             Init_PrismataSystem();
 
             switch(PriorityLvl)
             {
                 case 0:
                     // Nothing to do. seek.. find...
-                    
+                    foreach (var task in spant)
+                    {
+                        task.E(PriorityLvl); // property "stimTh" now altered
+                                             // search for a task that is similar to it
+                        if (this.tasks.Contains(task.InMind))
+                        {
+                            task.InMind.SAction.Invoke();
+
+                            this.tasks.Push(task.InMind);
+                            this.tasks.Pop();
+                            thoughts.Pop();
+                        }
+                    }
                     break;
                 case 1:
                     // tasks of what. Misc Stuff. Side qs.. Create tasks?
+
                     break;
                 case 2:
                     // BORED AF time to do shit.
@@ -156,13 +169,14 @@ namespace VCELL_Emulator
                     break;
                 default:
                     // DO SHIT
+                    // DeskTalk goes here.
+                    // and timer.
                     break;
             }
         }
 
         public void ActivateLoop()
         {
-            
             switch (Alive)
             {
                 case true:
@@ -196,6 +210,7 @@ namespace VCELL_Emulator
                 break;
             }
         }
+
     }
     delegate bool FindVNode(VNode vNode);
     class AI_EXTENSION
@@ -218,5 +233,4 @@ namespace VCELL_Emulator
             return results.ToArray();
         }
     }
-
 }
